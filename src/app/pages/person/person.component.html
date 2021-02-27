@@ -1,0 +1,149 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" id="btnAddPerson" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Nuevo
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Apellidos y nombres</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of st.person; index as i">
+                <th scope="row">
+                    {{ i + 1 }}
+                </th>
+                <td>
+                    {{ item.nameComplete }}
+                </td>
+                <td>
+                    {{ item.phone }}
+                </td>
+                <td>
+                    {{ item.email }}
+                </td>
+
+                <td>
+                    <button class="btn btn-info" (click)="onEdit( item.pkPerson )">
+                        <i class="fa fa-edit"></i> editar
+                    </button>
+
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" (click)="onShowConfirm( item.pkPerson )">
+                        <i class="fa fa-trash-alt"></i> eliminar
+                    </button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    {{titleModal}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form #frm="ngForm" id="frmPerson">
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="">Nombre</label>
+                        <input type="text" class="form-control" name="txtName" [(ngModel)]="bodyPerson.name" #name="ngModel" required [ngClass]="{
+                          'is-invalid': name.errors?.required && name.touched,
+                        'is-valid': !name.errors?.required && name.touched
+                        }">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Apellidos</label>
+                        <input type="text" class="form-control" name="txtSurName" [(ngModel)]="bodyPerson.surname" #surname="ngModel" required [ngClass]="{
+                          'is-invalid': surname.errors?.required && surname.touched,
+                        'is-valid': !surname.errors?.required && surname.touched
+                        }">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Teléfono</label>
+                        <input type="text" class="form-control" name="txtPhone" [(ngModel)]="bodyPerson.phone" #phone="ngModel" [ngClass]="{
+                          'is-invalid': phone.errors?.required && phone.touched,
+                        'is-valid': !phone.errors?.required && phone.touched
+                        }">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Email</label>
+                        <input type="text" class="form-control" name="txtEmail" [(ngModel)]="bodyPerson.email" #email="ngModel" [ngClass]="{
+                          'is-invalid': (email.errors?.required || email.errors?.pattern) && email.touched,
+                        'is-valid': !email.errors?.required && !email.errors?.pattern && email.touched
+                        }" required pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnClose">
+                      Cerrar
+                    </button>
+                    <button type="button" class="btn btn-primary" [disabled]="frm.invalid" (click)="onSubmit( frm )">
+                      {{txtBtn}}
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    {{titleModal}}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                ¿Está seguro(a) de eliminar este registro?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btnCloseConfirm">
+                Cerrar
+              </button>
+                <button type="button" class="btn btn-danger" (click)="onDelete( )">
+                Eliminar
+              </button>
+            </div>
+
+        </div>
+    </div>
+</div>
